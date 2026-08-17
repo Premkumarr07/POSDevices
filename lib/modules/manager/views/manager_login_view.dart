@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:posdevices/routes/app_routes.dart';
 
 import '../controllers/manager_auth_controller.dart';
 
@@ -142,11 +141,10 @@ class ManagerLoginView extends StatelessWidget {
                           onPressed: loading
                               ? null
                               : () {
-                                  Get.toNamed(AppRoutes.managerDashboard);
-                                  // controller.login(
-                                  //   loginController.text.trim(),
-                                  //   passwordController.text,
-                                  // );
+                                  controller.login(
+                                    loginController.text.trim(),
+                                    passwordController.text,
+                                  );
                                 },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,

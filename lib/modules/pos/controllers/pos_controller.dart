@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:posdevices/business/cart_calculator.dart';
 import 'package:posdevices/business/menu_rules.dart';
+import 'package:posdevices/core/constants/app_constants.dart';
 import 'package:posdevices/data/models/cart_item_model.dart';
 import 'package:posdevices/data/models/category_model.dart';
 import 'package:posdevices/data/models/menu_item_model.dart';
@@ -23,18 +24,49 @@ class PosController extends GetxController {
   final selectedCategoryId = RxnString();
   final cart = <CartItemModel>[].obs;
   final filteredMenu = <MenuItemModel>[].obs;
+  final isReady = false.obs;
 
-  List<CategoryModel> get categories => _menuRepository.categories;
+  RxList<CategoryModel> get categories => _menuRepository.categories;
   VenueModel? get venue => _menuRepository.venue.value;
+
+  String get venueId {
+    final args = Get.arguments;
+    if (args is Map && args['venueId'] is String) {
+      return args['venueId'] as String;
+    }
+    return AppConstants.demoVenueId;
+  }
+
+  String categoryNameFor(String categoryId) {
+    for (final category in categories) {
+      if (category.id == categoryId) {
+        return category.name;
+      }
+    }
+    return MenuRules.getCategoryDisplayName(categoryId);
+  }
 
   @override
   void onInit() {
     super.onInit();
-    _menuRepository.seed();
     ever(_menuRepository.menuItems, (_) => _applyFilters());
     ever(searchQuery, (_) => _applyFilters());
     ever(selectedCategoryId, (_) => _applyFilters());
+    _start();
+  }
+
+  Future<void> _start() async {
+    await _menuRepository.bindVenue(venueId);
+    await _orderRepository.bindVenue(venueId);
+    isReady.value = true;
     _applyFilters();
+  }
+
+  @override
+  void onClose() {
+    _menuRepository.dispose();
+    _orderRepository.dispose();
+    super.onClose();
   }
 
   void updateSearch(String value) {

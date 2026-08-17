@@ -37,7 +37,7 @@ class FirestoreService {
     Query Function(Query)? queryBuilder,
   }) async {
     Query query = _db.collection(collectionPath);
-    if (queryBuilder != n ull) {
+    if (queryBuilder != null) {
       query = queryBuilder(query);
     }
     return await query.get();

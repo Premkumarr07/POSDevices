@@ -861,6 +861,19 @@ class _MenuCardState extends State<_MenuCard> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+                    const SizedBox(height: 2),
+                    Text(
+                      MenuRules.getCategoryDisplayName(
+                        widget.item.categoryId as String? ?? '',
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: PosHomeView.secondaryText,
+                        fontSize: widget.compact ? 11 : 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
 
                     SizedBox(height: widget.compact ? 4 : 6),
 

@@ -30,6 +30,7 @@ class MenuRules {
       'cat_burger': 'Burgers',
       'cat_pizza': 'Pizza',
       'cat_drinks': 'Drinks',
+      'cat_specials': 'Specials',
       'cat_desserts': 'Desserts',
       'cat_apps': 'Appetizers',
       'cat_salads': 'Salads',

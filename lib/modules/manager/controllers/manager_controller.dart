@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:posdevices/core/constants/app_constants.dart';
 import 'package:posdevices/data/models/category_model.dart';
 import 'package:posdevices/data/models/device_model.dart';
 import 'package:posdevices/data/models/menu_item_model.dart';
@@ -6,30 +7,47 @@ import 'package:posdevices/data/models/order_model.dart';
 import 'package:posdevices/data/models/venue_model.dart';
 
 import '../../../data/repositories/menu_repository.dart';
+import '../../../data/repositories/order_repository.dart';
 
 class ManagerController extends GetxController {
-  ManagerController({MenuRepository? repository})
-    : _repository = repository ?? MenuRepository();
+  ManagerController({
+    MenuRepository? repository,
+    OrderRepository? orderRepository,
+  }) : _repository = repository ?? MenuRepository(),
+       _orderRepository = orderRepository ?? OrderRepository();
 
   final MenuRepository _repository;
+  final OrderRepository _orderRepository;
 
   final searchQuery = ''.obs;
   final selectedCategoryId = RxnString();
   final filteredMenu = <MenuItemModel>[].obs;
 
-  List<CategoryModel> get categories => _repository.categories;
-  List<OrderModel> get orders => _repository.orders;
+  RxList<CategoryModel> get categories => _repository.categories;
+  RxList<OrderModel> get orders => _orderRepository.orders;
   VenueModel? get venue => _repository.venue.value;
-  List<DeviceModel> get devices => _repository.devices;
+  RxList<DeviceModel> get devices => _repository.devices;
 
   @override
   void onInit() {
     super.onInit();
-    _repository.seed();
     ever(_repository.menuItems, (_) => _applyFilters());
     ever(searchQuery, (_) => _applyFilters());
     ever(selectedCategoryId, (_) => _applyFilters());
+    _start();
+  }
+
+  Future<void> _start() async {
+    await _repository.bindVenue(AppConstants.demoVenueId);
+    await _orderRepository.bindVenue(AppConstants.demoVenueId);
     _applyFilters();
+  }
+
+  @override
+  void onClose() {
+    _repository.dispose();
+    _orderRepository.dispose();
+    super.onClose();
   }
 
   void updateSearch(String value) {

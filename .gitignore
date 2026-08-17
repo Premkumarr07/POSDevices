@@ -27,11 +27,31 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
 /build/
 /coverage/
+
+# Firebase emulator / CLI
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+pubsub-debug.log
+database-debug.log
+
+# Local tooling / knowledge graph
+graphify-out/
+
+# Secrets (keep out even if added later)
+.env
+.env.*
+google-services.json
+GoogleService-Info.plist
+**/ephemeral/
 
 # Symbolication related
 app.*.symbols

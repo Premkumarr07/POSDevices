@@ -2,52 +2,22 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    function signedIn() {
-      return request.auth != null;
+    // Take-home demo: Manager + POS share one venue without Auth.
+    // Tighten these before a production deploy (see commented helpers below).
+    match /{document=**} {
+      allow read, write: if true;
     }
 
-    function userData() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
-    }
-
-    function sameVenue(venueId) {
-      return signedIn() && userData().venueId == venueId;
-    }
-
-    function isManager() {
-      return signedIn() && userData().role == 'manager';
-    }
-
-    match /users/{userId} {
-      allow read: if signedIn() && request.auth.uid == userId;
-      allow write: if isManager() && request.auth.uid == userId;
-    }
-
-    match /venues/{venueId} {
-      allow read: if sameVenue(venueId);
-      allow write: if isManager() && sameVenue(venueId);
-    }
-
-    match /categories/{categoryId} {
-      allow read: if sameVenue(resource.data.venueId);
-      allow create: if isManager() && sameVenue(request.resource.data.venueId);
-      allow update, delete: if isManager() && sameVenue(resource.data.venueId);
-    }
-
-    match /menu_items/{itemId} {
-      allow read: if sameVenue(resource.data.venueId);
-      allow create: if isManager() && sameVenue(request.resource.data.venueId);
-      allow update, delete: if isManager() && sameVenue(resource.data.venueId);
-    }
-
-    match /orders/{orderId} {
-      allow read: if sameVenue(resource.data.venueId);
-      allow create: if sameVenue(request.resource.data.venueId);
-    }
-
-    match /devices/{deviceId} {
-      allow read: if sameVenue(resource.data.venueId);
-      allow write: if isManager() && sameVenue(request.resource.data.venueId);
-    }
+    // Production-style rules (enable after Firebase Auth is wired):
+    // function signedIn() { return request.auth != null; }
+    // function userData() {
+    //   return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    // }
+    // function sameVenue(venueId) {
+    //   return signedIn() && userData().venueId == venueId;
+    // }
+    // function isManager() {
+    //   return signedIn() && userData().role == 'manager';
+    // }
   }
 }

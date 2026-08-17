@@ -11,10 +11,8 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - lib/manager/**
-    - lib/pos/**
-    - lib/pos copy/**
-    - lib/shared/**
+    - build/**
+    - graphify-out/**
 
 linter:
   # The lint rules applied to this project can be customized in the
