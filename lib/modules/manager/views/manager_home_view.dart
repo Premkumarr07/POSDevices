@@ -396,10 +396,7 @@ class _MenuItemSheetState extends State<_MenuItemSheet> {
     priceController = TextEditingController(
       text: (item?.price ?? 0).toStringAsFixed(2),
     );
-    categoryId = item?.categoryId ??
-        (widget.controller.categories.isNotEmpty
-            ? widget.controller.categories.first.id
-            : 'cat_burger');
+    categoryId = item?.categoryId ?? widget.controller.categories.first.id;
     available = item?.available ?? true;
   }
 

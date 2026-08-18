@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/menu_item_model.dart';
-import '../models/category_model.dart';
+import 'package:posdevices/core/constants/firestore_paths.dart';
+import 'package:posdevices/data/models/category_model.dart';
+import 'package:posdevices/data/models/menu_item_model.dart';
+
 import '../services/firestore_service.dart';
-import '../constants/firestore_paths.dart';
 
 class MenuRepository {
   final FirestoreService _firestoreService;
 
   MenuRepository({required FirestoreService firestoreService})
-      : _firestoreService = firestoreService;
+    : _firestoreService = firestoreService;
 
   // Menu Items
   Future<MenuItemModel> getMenuItem(String itemId) async {
-    final doc =
-        await _firestoreService.getDocument(FirestorePaths.menuItemDoc(itemId));
+    final doc = await _firestoreService.getDocument(
+      FirestorePaths.menuItemDoc(itemId),
+    );
     return MenuItemModel.fromFirestore(doc);
   }
 
@@ -24,9 +26,11 @@ class MenuRepository {
           queryBuilder: (query) =>
               query.where('venueId', isEqualTo: venueId).orderBy('name'),
         )
-        .map((snapshot) => snapshot.docs
-            .map((doc) => MenuItemModel.fromFirestore(doc))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => MenuItemModel.fromFirestore(doc))
+              .toList(),
+        );
   }
 
   Stream<List<MenuItemModel>> watchMenuByCategory(
@@ -41,9 +45,11 @@ class MenuRepository {
               .where('categoryId', isEqualTo: categoryId)
               .orderBy('name'),
         )
-        .map((snapshot) => snapshot.docs
-            .map((doc) => MenuItemModel.fromFirestore(doc))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => MenuItemModel.fromFirestore(doc))
+              .toList(),
+        );
   }
 
   Future<List<MenuItemModel>> getMenu(String venueId) async {
@@ -66,10 +72,10 @@ class MenuRepository {
   }
 
   Future<void> updateMenuItem(String itemId, MenuItemModel item) async {
-    await _firestoreService.updateDocument(
-      FirestorePaths.menuItemDoc(itemId),
-      {...item.toFirestore(), 'updatedAt': Timestamp.now()},
-    );
+    await _firestoreService.updateDocument(FirestorePaths.menuItemDoc(itemId), {
+      ...item.toFirestore(),
+      'updatedAt': Timestamp.now(),
+    });
   }
 
   Future<void> deleteMenuItem(String itemId) async {
@@ -77,13 +83,10 @@ class MenuRepository {
   }
 
   Future<void> toggleAvailability(String itemId, bool available) async {
-    await _firestoreService.updateDocument(
-      FirestorePaths.menuItemDoc(itemId),
-      {
-        'available': available,
-        'updatedAt': Timestamp.now(),
-      },
-    );
+    await _firestoreService.updateDocument(FirestorePaths.menuItemDoc(itemId), {
+      'available': available,
+      'updatedAt': Timestamp.now(),
+    });
   }
 
   // Categories
@@ -110,14 +113,17 @@ class MenuRepository {
               .orderBy('order')
               .orderBy('name'),
         )
-        .map((snapshot) => snapshot.docs
-            .map((doc) => CategoryModel.fromFirestore(doc))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => CategoryModel.fromFirestore(doc))
+              .toList(),
+        );
   }
 
   Future<CategoryModel> getCategory(String categoryId) async {
-    final doc = await _firestoreService
-        .getDocument(FirestorePaths.categoryDoc(categoryId));
+    final doc = await _firestoreService.getDocument(
+      FirestorePaths.categoryDoc(categoryId),
+    );
     return CategoryModel.fromFirestore(doc);
   }
 
@@ -136,7 +142,8 @@ class MenuRepository {
   }
 
   Future<void> deleteCategory(String categoryId) async {
-    await _firestoreService
-        .deleteDocument(FirestorePaths.categoryDoc(categoryId));
+    await _firestoreService.deleteDocument(
+      FirestorePaths.categoryDoc(categoryId),
+    );
   }
 }

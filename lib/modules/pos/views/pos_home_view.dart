@@ -799,7 +799,7 @@ class _MenuCardState extends State<_MenuCard> {
             : Matrix4.identity(),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(color: const Color(0xFFE1E5E8)),
           boxShadow: [
             BoxShadow(
@@ -844,105 +844,105 @@ class _MenuCardState extends State<_MenuCard> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(
                   widget.compact ? 12 : 15,
-                  widget.compact ? 9 : 12,
-                  widget.compact ? 10 : 13,
                   widget.compact ? 8 : 10,
+                  widget.compact ? 10 : 13,
+                  widget.compact ? 6 : 8,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.item.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: PosHomeView.text,
-                        fontSize: widget.compact ? 14 : 15,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      MenuRules.getCategoryDisplayName(
-                        widget.item.categoryId as String? ?? '',
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: PosHomeView.secondaryText,
-                        fontSize: widget.compact ? 11 : 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    SizedBox(height: widget.compact ? 4 : 6),
-
-                    Text(
-                      MenuRules.formatPrice(widget.item.price),
-                      style: TextStyle(
-                        color: PosHomeView.primaryDark,
-                        fontSize: widget.compact ? 13 : 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-
-                    const Flexible(child: SizedBox(height: 4)),
-
-                    Row(
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: available
-                                ? PosHomeView.green
-                                : const Color(0xFFEF4444),
-                          ),
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        widget.item.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: PosHomeView.text,
+                          fontSize: widget.compact ? 14 : 15,
+                          fontWeight: FontWeight.w700,
                         ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            available ? 'Available' : 'Sold Out',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        MenuRules.getCategoryDisplayName(
+                          widget.item.categoryId as String? ?? '',
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: PosHomeView.secondaryText,
+                          fontSize: widget.compact ? 10 : 11,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: widget.compact ? 3 : 5),
+                      Text(
+                        MenuRules.formatPrice(widget.item.price),
+                        style: TextStyle(
+                          color: PosHomeView.primaryDark,
+                          fontSize: widget.compact ? 13 : 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(height: widget.compact ? 2 : 4),
+                      Row(
+                        children: [
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
                               color: available
                                   ? PosHomeView.green
-                                  : const Color(0xFFDC2626),
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
+                                  : const Color(0xFFEF4444),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: widget.onAdd,
-                          child: Container(
-                            width: widget.compact ? 28 : 32,
-                            height: widget.compact ? 28 : 32,
-                            decoration: BoxDecoration(
-                              color: widget.onAdd != null
-                                  ? PosHomeView.primary
-                                  : const Color(0xFFD1D5DB),
-                              shape: BoxShape.circle,
-                              boxShadow: widget.onAdd != null && _hovering
-                                  ? const [
-                                      BoxShadow(
-                                        color: Color(0x400099A8),
-                                        blurRadius: 8,
-                                      ),
-                                    ]
-                                  : [],
-                            ),
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: widget.compact ? 17 : 20,
+                          const SizedBox(width: 2),
+                          Expanded(
+                            child: Text(
+                              available ? 'Available' : 'Sold Out',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: available
+                                    ? PosHomeView.green
+                                    : const Color(0xFFDC2626),
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          GestureDetector(
+                            onTap: widget.onAdd,
+                            child: Container(
+                              width: widget.compact ? 28 : 32,
+                              height: widget.compact ? 28 : 32,
+                              decoration: BoxDecoration(
+                                color: widget.onAdd != null
+                                    ? PosHomeView.primary
+                                    : const Color(0xFFD1D5DB),
+                                shape: BoxShape.circle,
+                                boxShadow: widget.onAdd != null && _hovering
+                                    ? const [
+                                        BoxShadow(
+                                          color: Color(0x400099A8),
+                                          blurRadius: 8,
+                                        ),
+                                      ]
+                                    : [],
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: widget.compact ? 17 : 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
