@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/venue_model.dart';
+import 'package:posdevices/core/constants/firestore_paths.dart';
+import 'package:posdevices/data/models/venue_model.dart';
+
 import '../services/firestore_service.dart';
-import '../constants/firestore_paths.dart';
 
 class VenueRepository {
   final FirestoreService _firestoreService;
